@@ -1,0 +1,22 @@
+SELECT DISTINCT
+		 If("P-C-2"."Registration Number"  = null, 'P2', '4050007620') as "Registration Number",
+		 "P-C-2"."NDIS Number" AS "NDIS Number",
+		 date_format("P-C-2"."Support Delivered From", '%d/%m/%Y') AS "Support Delivered From",
+		 date_format("P-C-2"."Support Delivered To", '%d/%m/%Y') AS "Support Delivered To",
+		 If("P-C-2"."Support Number"  = 'Specialist', '11_022_0110_7_3', if("P-C-2"."Support Number"  = 'Behaviour Management', ' 11_023_0110_7_3', If("P-C-2"."Support Number"  = null, '11_799_0110_7_3', '11_799_0110_7_3'))) as "Support Number",
+		 "P-C-2"."Support Number",
+		 "BData"."Invoices (Zoho Books).Invoice Number" AS "Claim Reference",
+		 "P-C-2"."Kilometer Travelled" AS "Quantity",
+		 "P-C-2"."Hours" AS "Hours",
+		 If("P-C-2"."Support Number"  = 'Specialist', '214.41', if("P-C-2"."Support Number"  = 'Behaviour Management', '193.99', '0.85')) as "Unit Price",
+		 /*"P-C-2"."Agent and Client (CRM).Agencies.Agency Name" AS "Client Name",*/
+/*"P-C-2"."Support Number" AS "Support Number",*/ If("P-C-2"."GST Code"  = null, 'P2', 'P2') /*"P-C-2"."GST Code" AS "GST Code",*/
+/*"P-C-2"."Registration Number" AS "Registration Number",*/
+/* if_case('P-C-2"."Support Number', startswith('Specialist'), '11_022_0110_7_3', contains('Behavior Management'), '11_023_0110_7_3', 'Support List') AS "Support Number2",*/ as "GST Code",
+		 "P-C-2"."Authorised By" AS "Authorised By",
+		 "P-C-2"."Participant Approved" AS "Participant Approved",
+		 "P-C-2"."In Kind Funding Program" AS "In Kind Funding Program",
+		 "P-C-2"."Claim Type" AS "Claim Type",
+		 "P-C-2"."Cancellation Reason" AS "Cancellation Reason"
+FROM  "P-C-2"
+JOIN "BData" ON "P-C-2"."Agent and Client (CRM).Agencies.Agency Name"  = "BData"."Customers (Zoho Books).Customer Name"  
