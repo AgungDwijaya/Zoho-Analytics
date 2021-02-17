@@ -1,0 +1,19 @@
+SELECT
+		 if("SM-B-C"."Registration Number"  = null, 'P2', '4050007620') AS "Registration Number",
+		 "SM-B-C"."NDIS Number" AS "NDIS Number",
+		 date_format("SM-P"."Timesheets (Zoho Projects).Start Time", '%d/%m/%Y') AS "Support Delivered From",
+		 date_format("SM-P"."Timesheets (Zoho Projects).End Time", '%d/%m/%Y') AS "Support Delivered To",
+		 if("SM-P"."Timesheets (Zoho Projects).Service Billing Type"  = 'Specialist', '11_022_0110_7_3', if("SM-P"."Timesheets (Zoho Projects).Service Billing Type"  = 'Behaviour Management', '11_023_0110_7_3', if("SM-P"."Timesheets (Zoho Projects).Service Billing Type"  = null, '11_799_0110_7_3', '11_799_0110_7_3'))) AS "Support Number",
+		 "SM-B-C"."Invoice Number" AS "Claim Reference",
+		 /*"SM-B-C"."Agencies (Zoho CRM).Agency Owner Name" AS "Owner Name",*/ "SM-P"."Timesheets (Zoho Projects).Kilometers Traveled" AS "Quantity",
+		 "SM-B-C"."Project Reference ID" AS "Project Reference ID",
+		 "SM-P"."Timesheets (Zoho Projects).Hours" AS "Hours",
+		 if("SM-P"."Timesheets (Zoho Projects).Service Billing Type"  = 'Specialist', '214.41', if("SM-P"."Timesheets (Zoho Projects).Service Billing Type"  = 'Behaviour Management', '193.99', '0.85')) AS "Unit Price",
+		 if("SM-B-C"."GST Code"  = null, 'P2', 'P2') AS "GST Code",
+		 "SM-B-C"."Authorised By" AS "Authorised By",
+		 "SM-B-C"."Participant Approved" AS "Participant Approved",
+		 "SM-B-C"."In Kind Program" AS "In Kind Program",
+		 "SM-B-C"."Agencies (Zoho CRM).Claim Type" AS "Claim Type",
+		 "SM-B-C"."Cancellation Reason" AS "Cancellation Reason"
+FROM  "SM-B-C"
+JOIN "SM-P" ON "SM-B-C"."Project Reference ID"  = "SM-P"."Client ID"  
