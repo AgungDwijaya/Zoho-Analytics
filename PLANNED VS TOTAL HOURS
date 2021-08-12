@@ -1,0 +1,29 @@
+SELECT
+		 "Tasks (Zoho Projects)"."Task ID" 'Task ID',
+		 "Tasks (Zoho Projects)"."Task Name" 'Task Name',
+		 "Tasks (Zoho Projects)"."Milestone Name" 'Milestone Name',
+		 "Tasks (Zoho Projects)"."Project Name" 'Project Name',
+		 "Tasks (Zoho Projects)"."Status",
+		 "Tasks (Zoho Projects)"."Due",
+		 "Tasks Owner (Zoho Projects)"."Task Owner" 'Task Owner',
+		 "Tasks Owner (Zoho Projects)"."Estimated Hour" 'Estimated Hours',
+		 sum("Timesheets (Zoho Projects)"."Hours") 'Total Logged Hours',
+		 (sum("Timesheets (Zoho Projects)"."Hours") / "Tasks Owner (Zoho Projects)"."Estimated Hour") * 100 'Task Completion Trend',
+		 
+			case
+				 when (sum("Timesheets (Zoho Projects)"."Hours") / "Tasks Owner (Zoho Projects)"."Estimated Hour") * 100  > 100 then 'Late'
+				 else 'On Time'
+			 END 'Completion Mode'
+FROM  "Tasks (Zoho Projects)"
+JOIN "Tasks Owner (Zoho Projects)" ON "Tasks (Zoho Projects)"."Task ID"  = "Tasks Owner (Zoho Projects)"."Task ID" 
+LEFT JOIN "Timesheets (Zoho Projects)" ON "Tasks Owner (Zoho Projects)"."Task ID"  = "Timesheets (Zoho Projects)"."Task ID"
+	 AND	"Tasks Owner (Zoho Projects)"."Owner ID"  = "Timesheets (Zoho Projects)"."Owner ID"  
+GROUP BY "Tasks (Zoho Projects)"."Task Name",
+	 "Tasks (Zoho Projects)"."Milestone Name",
+	 "Tasks (Zoho Projects)"."Project Name",
+	 "Tasks Owner (Zoho Projects)"."Task Owner",
+	 "Tasks Owner (Zoho Projects)"."Estimated Hour",
+	 "Tasks (Zoho Projects)"."Task ID",
+	 "Tasks (Zoho Projects)"."Status",
+	  "Tasks (Zoho Projects)"."Due" 
+
